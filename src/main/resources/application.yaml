@@ -2,7 +2,7 @@ spring:
   application:
     name: cards        # must match the file in your config repo (e.g., accounts.yml / accounts-prod.yml)
   config:
-    import: "optional:configserver:http://localhost:8081"
+    import: "optional:configserver:http://localhost:8083"
     server:
       servlet:
         context-path: /cards-service
