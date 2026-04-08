@@ -28,17 +28,12 @@ public class CardService {
 
     @Transactional
     public CardDto createCard(CreateCardRequest request) {
-        log.info("Creating Card for accountNumber: {}", request.getAccountNumber());
-        cardRepository.findByCardNumber(request.getCardNumber()).ifPresent(card -> {
-            throw new CardAlreadyExistsException("Card", "cardNumber", request.getCardNumber().toString());
-        });
         Card card = buildCreateCardInformation(request);
         CardStatusEntity cardStatus = fillStatusCard(card);
         card.setStatus(cardStatus);
         Card savedCard = saveCard(card);
         return CardDto.fromEntity(savedCard);
     }
-
     private Card saveCard(Card card) {
         return cardRepository.save(card);
     }
