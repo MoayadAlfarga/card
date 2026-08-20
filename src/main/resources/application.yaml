@@ -1,19 +1,40 @@
 spring:
   application:
-    name: cards        # must match the file in your config repo (e.g., accounts.yml / accounts-prod.yml)
+    name: cards
   config:
-    import: "optional:configserver:http://localhost:8081"
-    server:
-      servlet:
-        context-path: /cards-service
-      port: '8091'
+    import: "optional:configserver:http://configserver:8083"
+    #    import: "optional:configserver:http://localhost:8083"
 
-#      spring:
-#        application:
-#          name: cards        # must match the file in your config repo (e.g., accounts.yml / accounts-prod.yml)
-#        config:
-#          import: "optional:configserver:http://localhost:8081"
-#          server:
-#            servlet:
-#              context-path: /cards-service
-#            port: '8091'
+server:
+  port: 8090
+  servlet:
+    context-path: /cards-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+info:
+  app:
+    name: "cards"
+    description: "Eazy Bank Cards Application"
+    version: "1.0.0"
