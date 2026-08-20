@@ -1,35 +1,40 @@
 spring:
   application:
-    name: cards        # must match the file in your config repo (e.g., accounts.yml / accounts-prod.yml)
+    name: cards
   config:
-    import: "optional:configserver:http://localhost:8083"
+    import: "optional:configserver:http://configserver:8083"
+    #    import: "optional:configserver:http://localhost:8083"
+
 server:
-  port: 9000
+  port: 8090
   servlet:
     context-path: /cards-service
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoint:
     shutdown:
       access: unrestricted
+    health:
+      probes:
+        enabled: true
   info:
     env:
       enabled: true
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8012/eureka/
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 info:
   app:
-    name: "card"
-    description: "Eazy Bank Card Application"
+    name: "cards"
+    description: "Eazy Bank Cards Application"
     version: "1.0.0"
